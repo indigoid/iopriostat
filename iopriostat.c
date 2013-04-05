@@ -61,9 +61,8 @@ void investigate(struct iopriostat* state, int pid) {
 }
 
 void print_ints(int* p, int n) {
-	printf("%d", p[0]);
-	for (int i = 1; i < n; i++) {
-		printf(" %d", p[i]);
+	for (int i = 0; i < n; i++) {
+		printf(" %4d", p[i]);
 	}
 	printf("\n");
 }
@@ -71,9 +70,9 @@ void print_ints(int* p, int n) {
 void display(struct iopriostat* state) {
 	printf("none:        total %d\n", state->n_none);
 	printf("idle:        total %d\n", state->n_idle);
-	printf("best-effort: total %d by-level ", state->n_besteffort);
+	printf("best-effort: total %d by-level", state->n_besteffort);
 	print_ints((int*) &(state->n_besteffort), MAXLEVEL+1);
-	printf("realtime:    total %d by-level ", state->n_rt);
+	printf("realtime:    total %d by-level", state->n_rt);
 	print_ints((int*) &(state->n_rt_hist), MAXLEVEL+1);
 }
 
@@ -90,7 +89,7 @@ int main(void) {
 	}
 	while ((ent = readdir(dirp)) != NULL) {
 		int pid = atoi(ent->d_name);
-		if (pid > 1) {
+		if (pid > 0) {
 			investigate(&results, pid);
 		}
 	}

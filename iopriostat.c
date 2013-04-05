@@ -60,34 +60,21 @@ void investigate(struct iopriostat* state, int pid) {
 	}
 }
 
+void print_ints(int* p, int n) {
+	printf("%d", p[0]);
+	for (int i = 1; i < n; i++) {
+		printf(" %d", p[i]);
+	}
+	printf("\n");
+}
+
 void display(struct iopriostat* state) {
-	if (state->n_none > 0)
-		printf("%d processes with no scheduling class\n", state->n_none);
-	if (state->n_rt > 0) {
-		printf("%d processes with real-time IO priority\n", state->n_rt);
-		for (int i = 0; i <= MAXLEVEL; i++) {
-			int count = state->n_rt_hist[i];
-			if(count > 0)
-				printf("\t%d processes at real-time priority %d\n", count, i);
-		}
-	} else {
-		printf("No processes with real-time IO priority\n");
-	}
-	if (state->n_besteffort > 0) {
-		printf("%d processes with best-effort IO priority\n", state->n_besteffort);
-		for (int i = 0; i <= MAXLEVEL; i++) {
-			int count = state->n_besteffort_hist[i];
-			if(count > 0)
-				printf("\t%d processes at best-effort priority %d\n", count, i);
-		}
-	} else {
-		printf("No processes with best-effort IO priority\n");
-	}
-	if (state->n_idle > 0) {
-		printf("%d processes with idle IO priority\n", state->n_rt);
-	} else {
-		printf("No processes with idle IO priority\n");
-	}
+	printf("none:        total %d\n", state->n_none);
+	printf("idle:        total %d\n", state->n_idle);
+	printf("best-effort: total %d by-level ", state->n_besteffort);
+	print_ints((int*) &(state->n_besteffort), MAXLEVEL+1);
+	printf("realtime:    total %d by-level ", state->n_rt);
+	print_ints((int*) &(state->n_rt_hist), MAXLEVEL+1);
 }
 
 int main(void) {

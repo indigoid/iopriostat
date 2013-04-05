@@ -1,16 +1,15 @@
 iopriostat
 ==========
 
-Takes no arguments, shows a breakdown of processes by their Linux IO scheduling
+Takes no arguments. Shows a breakdown of processes by their Linux IO scheduling
 class and priority level within that class.
 
 Sample usage:
 
-$ ./iopriostat
-93 processes with no scheduling class
-No processes with real-time IO priority
-2 processes with best-effort IO priority
-        2 processes at best-effort priority 3
-No processes with idle IO priority
+$ ionice -c 3 ./iopriostat
+none:        total 94
+idle:        total 1 <-- this would be our iopriostat process
+best-effort: total 2 by-level 2 0 0 0 0 2 0 0
+realtime:    total 0 by-level 0 0 0 0 0 0 0 0
 
 ioprio.h shamelessly copied from Jens Axboe's ionice.c (util-linux-ng)
